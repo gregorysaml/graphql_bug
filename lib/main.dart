@@ -4,6 +4,8 @@ import 'package:graphql_bug/loadingWidget.dart';
 import 'package:graphql_bug/succ.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+//todo this is the api
+// https://graphqlzero.almansi.me/#example-top
 Future<void> main() async {
   await initHiveForFlutter();
   final HttpLink _httpLink = HttpLink('https://graphqlzero.almansi.me/api');
