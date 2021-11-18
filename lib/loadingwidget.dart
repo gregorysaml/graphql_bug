@@ -37,9 +37,7 @@ class _LoadingPageState extends State<LoadingPage> {
     print('userdata1: $userdata');
 
     isqueryed = true;
-    if (userdata.data.isNotEmpty) {
-      existinUser = true;
-    }
+
 
     return userdata.data;
   }
