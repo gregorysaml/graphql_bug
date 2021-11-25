@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, file_names
-
 import 'package:flutter/material.dart';
-import 'package:graphql_bug/succ.dart';
+import 'package:graphql_bug/const/queries.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -24,7 +23,7 @@ class _LoadingPageState extends State<LoadingPage> {
     GraphQLClient client = GraphQLProvider.of(context).value;
     var userdata = await client.query(QueryOptions(
       fetchPolicy: FetchPolicy.networkOnly,
-      document: gql(getUserData()),
+      document: gql(getUserData),
     ));
     // ignore: unrelated_type_equality_checks
     if (userdata.exception == true) {
@@ -38,36 +37,11 @@ class _LoadingPageState extends State<LoadingPage> {
 
     isqueryed = true;
 
-
     return userdata.data;
   }
 
-  String createUser() {
-    return '''mutation (\$input:String!) {
-  createPost(input: \$input) {
-    id
-    title
-    body
-  }
-} ''';
-  }
 
-  String getUserData() {
-    return '''query {
-  user(id: 1) {
-    id
-    username
-    email
-    address {
-      geo {
-        lat
-        lng
-      }
-    }
-  }
-}
-    ''';
-  }
+
 
   Future nav(BuildContext context) async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -102,32 +76,38 @@ class _LoadingPageState extends State<LoadingPage> {
         body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Mutation(
-              options: MutationOptions(
-                  cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
-                  onCompleted: (data) {},
-                  onError: (data) {},
-                  document: gql(createUser())),
-              builder: (RunMutation runMutation, QueryResult result) {
-                getQuery();
+        children:const [
+          // Mutation(
+          //     options: MutationOptions(
+          //         cacheRereadPolicy: CacheRereadPolicy.ignoreAll,
+          //         onCompleted: (data) {},
+          //         onError: (data) {},
+          //         document: gql(makeUserMutation)),
+          //     builder: (RunMutation runMutation, QueryResult result) {
+          //       getQuery();
+          //       DateTime now = DateTime.now();
+          //       String isoDate = now.toIso8601String();
+          //       print('isoDate: $isoDate');
+          //       runMutation({
 
-                runMutation({
-                  'input': {
-                    "title": "A Very Captivating Post Title",
-                    "body": "Some interesting content."
-                  }
-                });
-                userdata = result.data;
+          //       });
+          //       userdata = result.data;
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  nav(context);
-                });
+          //       WidgetsBinding.instance.addPostFrameCallback((_) {
+          //         nav(context);
+          //       });
 
-                return const SizedBox.shrink();
-              }),
+          //       return const SizedBox.shrink();
+          //     }),
+          CircularProgressIndicator()
         ],
       ),
     ));
   }
 }
+
+
+                  // 'PK': 'MOB#' +
+                  //     'c48a365d-92bf-43cf-8237-13d7fe10c7df', //cognitoID,
+                  // 'CRAT': isoDate,
+                  // 'MBL': '+3069811302502'

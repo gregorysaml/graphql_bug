@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:graphql_bug/loadingWidget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_bug/bloc/query_bloc.dart';
+import 'package:graphql_bug/bloc/repository.dart';
+import 'package:graphql_bug/cubit/query_cubit.dart';
+import 'package:graphql_bug/loadingwidget.dart';
 import 'package:graphql_bug/succ.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 //todo this is the api
 // https://graphqlzero.almansi.me/#example-top
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter();
-  final HttpLink _httpLink = HttpLink('https://graphqlzero.almansi.me/api');
-  ValueNotifier<GraphQLClient> client = ValueNotifier(
-    GraphQLClient(cache: GraphQLCache(store: HiveStore()), link: _httpLink),
-  );
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(GraphQLProvider(client: client, child: const MyApp()));
+  runApp(const MyApp());
+}
+
+GraphQLClient _client(){
+    final HttpLink _httpLink = HttpLink(
+      'https://imn2jwj4rja7dj3oloyzyopove.appsync-api.eu-central-1.amazonaws.com/graphql',
+      defaultHeaders: {'x-api-key': 'da2-zsptnd2muned3mv5db45h6mhki'});
+    return GraphQLClient(link: _httpLink, cache: GraphQLCache(store: HiveStore()));
+
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +36,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(),
+        '/': (_) => BlocProvider(
+              create: (context) => QueryBloc(
+                  queriesMul: QueriesMul(client: _client())
+              ),
+              child:const  LoadingPage(),
+            ),
         '/second': (context) => const LoadingPage(),
         '/trea': (context) => const Name(),
       },
@@ -51,19 +65,23 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoadingPage()));
-                },
-                child: const Text('Create a user'))
-          ],
+      body: BlocProvider(
+        create: (_) => QueryCubit(),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<QueryCubit>(context).client;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoadingPage()));
+                  },
+                  child: const Text('Create a user'))
+            ],
+          ),
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
