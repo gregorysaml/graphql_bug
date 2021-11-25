@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graphql_bug/bloc/query_bloc.dart';
 import 'package:graphql_bug/bloc/repository.dart';
-import 'package:graphql_bug/cubit/query_cubit.dart';
 import 'package:graphql_bug/loadingwidget.dart';
 import 'package:graphql_bug/succ.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
               create: (context) => QueryBloc(
                   queriesMul: QueriesMul(client: _client())
               ),
-              child:const  LoadingPage(),
+              child:const  MyHomePage(),
             ),
         '/second': (context) => const LoadingPage(),
         '/trea': (context) => const Name(),
@@ -55,33 +54,43 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
+  
+
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<QueryBloc>(context).add(LoadMyRepos());
+  }
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: BlocProvider(
-        create: (_) => QueryCubit(),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<QueryCubit>(context).client;
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoadingPage()));
-                  },
-                  child: const Text('Create a user'))
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+                onPressed: () {
+                  BlocProvider.of<QueryBloc>(context).add(LoadMyRepos());
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoadingPage()));
+                },
+                child: const Text('Create a user'))
+          ],
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.

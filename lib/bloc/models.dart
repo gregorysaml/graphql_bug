@@ -8,7 +8,7 @@ class Repo{
   final String mbl;
   final String strpi;
 
-  Repo(this.pK, this.sK, this.user, this.name, this.email, this.mbl, this.strpi);
+  Repo({this.pK, this.sK, this.user, this.name, this.email, this.mbl, this.strpi,});
 
   
 

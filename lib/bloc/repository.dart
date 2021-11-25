@@ -10,7 +10,7 @@ class QueriesMul {
 
   QueriesMul({@required this.client}) : assert(client != null);
 
-  Future<QueryResult> getRepositories(int numOfRepositories) async {
+  Future<QueryResult> getUserQuery() async {
     final WatchQueryOptions _options = WatchQueryOptions(
       document: parseString(getUserData),
       variables: <String, dynamic>{
@@ -34,4 +34,6 @@ class QueriesMul {
 
     return await client.mutate(_options);
   }
+
+  void add(BuildContext context) {}
 }
