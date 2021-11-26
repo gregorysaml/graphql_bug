@@ -4,16 +4,15 @@ part of 'query_bloc.dart';
 abstract class QueryEvent extends Equatable{
  const QueryEvent([List props=const[]]):super();
 }
- class LoadMyRepos extends QueryEvent {
-  // the number of repositories to load, default is 50
-  
+ class Loadmyuser extends QueryEvent {
+
 
   @override
-  String toString() => 'LoadMyRepos';
+  String toString() => 'Loadss';
 
   @override
-  // TODO: implement props
-  List<Object> get props => throw UnimplementedError();
+
+  List<Object> get props => [];
 
 
 }

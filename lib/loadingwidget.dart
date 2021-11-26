@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, file_names
 import 'package:flutter/material.dart';
+import 'package:graphql_bug/bloc/models.dart';
 import 'package:graphql_bug/const/queries.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -14,6 +15,7 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
+  
   Map userdata;
   Map mutation;
   bool isqueryed = false;
@@ -58,6 +60,8 @@ class _LoadingPageState extends State<LoadingPage> {
 
   @override
   void initState() {
+    final test=Repo();
+    print('tsest ${test.pK}');
     //  getQuery();
     super.initState();
   }

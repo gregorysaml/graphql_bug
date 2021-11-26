@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -15,21 +14,41 @@ class QueryBloc extends Bloc<QueryEvent, QueryState> {
 
   List<Repo> userQuery;
 
-  QueryBloc({@required this.queriesMul}) : super(QueryInitial()) {
-    @override
+  QueryBloc({@required this.queriesMul}) : super(UserLoading());
+
     Stream<QueryState> mapEventToState(
-      QueryEvent event,
-    ) async* {
+    QueryEvent event,
+  ) async* {
+    try {
+      if (event is Loadmyuser) {
+        yield* _mapReposToState();
+        // } else if (event is UpdateReposAfterMutations) {
+        //   yield* _mapUpdateAfterMutatationToState(event.repo);
+      } 
+    } catch (_, stackTrace) {
+      print('$_ $stackTrace');
+      yield state;
+    }
+  }
+
+
+
+
+    Stream<QueryState> _mapReposToState() async* {
       try {
         yield UserLoading();
 
         final queryResults = await queriesMul.getUserQuery();
+        print('queryResults: $queryResults');
 
         if (queryResults.hasException) {
           yield UserNotLoaded(queryResults.exception.graphqlErrors);
+          return;
         }
         final List<dynamic> repos =
             queryResults.data['GetMobileUserData']['items'] as List<dynamic>;
+            
+        print('repos: $repos');
         final List<Repo> user = repos.map((dynamic e) => Repo(
             pK: e['PK'] as String,
             sK: e['SK'] as String,
@@ -37,13 +56,15 @@ class QueryBloc extends Bloc<QueryEvent, QueryState> {
             name: e['NAME'] as String,
             email: e['EML'] as String,
             mbl: e['MBL'] as String,
-            strpi: e['STRPI'] as String));
+            strpi: e['STRPI'] as String)).toList();
 
+            userQuery=user;
         yield UserLoaded(results: user);
       } catch (_, stackTrace) {
 // ignore: avoid_print
-        print('erro $_ and $stackTrace');
+yield UserNotLoaded(_);
+        
       }
     }
   }
-}
+

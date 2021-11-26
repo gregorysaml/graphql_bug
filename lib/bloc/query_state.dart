@@ -4,6 +4,8 @@ part of 'query_bloc.dart';
 abstract class QueryState {}
 
 class QueryInitial extends QueryState {
+  QueryInitial(UserLoading userLoading);
+
     @override
   String toString() => 'Initial';
 }

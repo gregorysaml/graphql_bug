@@ -18,12 +18,12 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-GraphQLClient _client(){
-    final HttpLink _httpLink = HttpLink(
+GraphQLClient _client() {
+  final HttpLink _httpLink = HttpLink(
       'https://imn2jwj4rja7dj3oloyzyopove.appsync-api.eu-central-1.amazonaws.com/graphql',
       defaultHeaders: {'x-api-key': 'da2-zsptnd2muned3mv5db45h6mhki'});
-    return GraphQLClient(link: _httpLink, cache: GraphQLCache(store: HiveStore()));
-
+  return GraphQLClient(
+      link: _httpLink, cache: GraphQLCache(store: HiveStore()));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,41 +33,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        '/': (_) => BlocProvider(
-              create: (context) => QueryBloc(
-                  queriesMul: QueriesMul(client: _client())
-              ),
-              child:const  MyHomePage(),
-            ),
-        '/second': (context) => const LoadingPage(),
-        '/trea': (context) => const Name(),
-      },
+      // routes: {
+      //   '/': (_) =>  const MyHomePage(),
+      //   '/second': (context) => const LoadingPage(),
+      //   '/trea': (context) => const Name(),
+      // },
+      home: const MyHomePage(),
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      // home: const Name(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key key}) : super(key: key);
-  
-
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<QueryBloc>(context).add(LoadMyRepos());
+    // BlocProvider.of<QueryBloc>(context).add(Loadmyuser());
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -75,25 +69,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-                onPressed: () {
-                  BlocProvider.of<QueryBloc>(context).add(LoadMyRepos());
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoadingPage()));
-                },
-                child: const Text('Create a user'))
-          ],
+    return BlocProvider(
+      create: (context) => QueryBloc(queriesMul: QueriesMul(client: _client())),
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Builder(builder: (context) {
+                return ElevatedButton(
+                    onPressed: () {
+                       BlocProvider.of<QueryBloc>(context).add(Loadmyuser());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoadingPage()));
+                    },
+                    child: const Text('Create a user'));
+              })
+            ],
+          ),
         ),
+        // This trailing comma makes auto-formatting nicer for build methods.
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

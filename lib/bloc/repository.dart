@@ -35,5 +35,5 @@ class QueriesMul {
     return await client.mutate(_options);
   }
 
-  void add(BuildContext context) {}
+  
 }
