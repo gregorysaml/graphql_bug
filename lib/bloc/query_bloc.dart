@@ -1,3 +1,7 @@
+// ignore_for_file: avoid_print
+
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -100,16 +104,26 @@ yield UserNotLoaded(_);
     try {
 
 
-      // yield UserLoaded(results: userQuery);
-
       final queryResults = await queriesMul.makeUserMutation();
       print('queryResults: $queryResults');
+      final result=queryResults.exception.graphqlErrors;
+      print('result: $result');
 
       if (queryResults.hasException) {
         // @TODO Improve error handling here, may be introduce a hasError Method
-        yield UserNotLoaded(queryResults.exception.graphqlErrors);
-        print('queryResults.exception.graphqlErrors: ${queryResults.exception.graphqlErrors[0]}');
-        // if(queryResults.exception.graphqlErrors[1]=='message:ID already exists')
+        if(queryResults.exception.linkException is NetworkException){
+          yield NetworkEx(error: queryResults.exception.linkException.toString());
+        }
+
+        // if(true  )
+        // yield UserExist(error: queryResults.exception.graphqlErrors);
+
+
+        print('queryResults ${queryResults.data}');
+        final yeah =queryResults.exception.graphqlErrors;
+        final tset =yeah[0].message;
+        print('tset: $tset');
+        print('yeah: ${yeah[0].message}');
         return;
       }
 

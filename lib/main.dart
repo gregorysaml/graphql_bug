@@ -7,8 +7,6 @@ import 'package:graphql_bug/bloc/repository.dart';
 import 'package:graphql_bug/loadingwidget.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-//todo this is the api
-// https://graphqlzero.almansi.me/#example-top
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter();
@@ -85,12 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       print(test.pK);
                       BlocProvider.of<QueryBloc>(context).add(MakeMyUser());
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => BlocProvider.value(
-                                    value: BlocProvider.of<QueryBloc>(context),
-                                    child:const  LoadingPage(),
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<QueryBloc>(context),
+                            child: const LoadingPage(), 
+                          ),
+                        ),
+                      );
                     },
                     child: const Text('Create a user'));
               })

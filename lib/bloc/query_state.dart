@@ -6,7 +6,7 @@ abstract class UserState {}
 class QueryInitial extends UserState {
   QueryInitial(UserLoading userLoading);
 
-    @override
+  @override
   String toString() => 'Initial';
 }
 
@@ -22,6 +22,7 @@ class UserNotLoaded extends UserState {
   @override
   String toString() => 'ReposNotLoaded';
 }
+
 class UserLoaded extends UserState {
   final List<Repo> results;
 
@@ -31,4 +32,26 @@ class UserLoaded extends UserState {
 
   @override
   String toString() => 'UserResults: {$results }';
+}
+
+class UserExist extends UserState {
+  final List<GraphQLError> error;
+
+  UserExist({this.error});
+  
+  
+
+  @override
+  String toString() => 'UserResults: {$error }';
+}
+
+class NetworkEx extends UserState {
+  final String  error;
+
+  NetworkEx({this.error});
+  
+  
+
+  @override
+  String toString() => 'UserResults: {$error }';
 }
