@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graphql_bug/bloc/models.dart';
 import 'package:graphql_bug/bloc/query_bloc.dart';
 import 'package:graphql_bug/bloc/repository.dart';
 import 'package:graphql_bug/loadingwidget.dart';
-import 'package:graphql_bug/succ.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 //todo this is the api
@@ -56,6 +56,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final test = Repo();
   @override
   void initState() {
     super.initState();
@@ -80,11 +81,16 @@ class _MyHomePageState extends State<MyHomePage> {
               Builder(builder: (context) {
                 return ElevatedButton(
                     onPressed: () {
-                       BlocProvider.of<QueryBloc>(context).add(Loadmyuser());
+                      BlocProvider.of<QueryBloc>(context).add(Loadmyuser());
+                      print(test.pK);
+                      BlocProvider.of<QueryBloc>(context).add(MakeMyUser());
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoadingPage()));
+                              builder: (_) => BlocProvider.value(
+                                    value: BlocProvider.of<QueryBloc>(context),
+                                    child:const  LoadingPage(),
+                                  )));
                     },
                     child: const Text('Create a user'));
               })

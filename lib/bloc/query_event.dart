@@ -1,5 +1,6 @@
 part of 'query_bloc.dart';
 
+
 @immutable
 abstract class QueryEvent extends Equatable{
  const QueryEvent([List props=const[]]):super();
@@ -14,6 +15,15 @@ abstract class QueryEvent extends Equatable{
 
   List<Object> get props => [];
 
+
+}
+
+class MakeMyUser extends QueryEvent{
+  @override
+  String toString()=>'Making';
+
+  @override
+  List<Object> get props => [];
 
 }
 

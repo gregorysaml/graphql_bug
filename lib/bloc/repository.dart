@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
-import 'package:graphql_bug/bloc/models.dart';
 import 'package:graphql_bug/const/queries.dart';
 
 class QueriesMul {
@@ -22,18 +21,21 @@ class QueriesMul {
     return await client.query(_options);
   }
 
-  Future<QueryResult> toggleRepoStar(Repo repo) async {
-    var document = makeUserMutation;
+  Future<QueryResult> makeUserMutation() async {
+                             
+                          DateTime now = DateTime.now();
+                          String isoDate = now.toIso8601String();
 
     final MutationOptions _options = MutationOptions(
-      document: parseString(document),
-      variables: <String, String>{
-        'starrableId': repo.user,
+      document: parseString(createUserMutation),
+      variables: <String, dynamic>{
+                            'PK': 'MOB#' 'c48a365d-92bf-43cf-8237-13d7fe10c7df', //cognitoID,
+                            'CRAT': isoDate,
+                            'MBL': '6969131415',
+                            
       },
     );
 
     return await client.mutate(_options);
   }
-
-  
 }

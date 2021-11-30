@@ -1,5 +1,5 @@
 
-   const makeUserMutation= '''mutation CreateMobileUser (\$PK:String!, \$CRAT:String! , \$MBL:String!,){
+   const createUserMutation= '''mutation CreateMobileUser (\$PK:String!, \$CRAT:String! , \$MBL:String!,){
   CreateMobileUser(input: {
       PK: \$PK, 
       SK: \$PK, 
