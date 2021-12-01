@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -122,6 +121,9 @@ yield UserNotLoaded(_);
         print('queryResults ${queryResults.data}');
         final yeah =queryResults.exception.graphqlErrors;
         final tset =yeah[0].message;
+        if(tset=='ID already exists'){
+          print('DOULEUEI MALAKA MOYY');
+        }
         print('tset: $tset');
         print('yeah: ${yeah[0].message}');
         return;
